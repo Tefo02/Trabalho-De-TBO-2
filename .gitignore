@@ -1,0 +1,12 @@
+# Arquivos de build
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+
+# Configurações do VS Code
+.vscode/
+
