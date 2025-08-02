@@ -2,7 +2,9 @@
 #include <fstream>
 #include <sstream>
 
-bool Dictionary::loadFromFile(const std::string& filepath) {
+Dictionary::Dictionary(const std::string& filepath) : filepath(filepath) {}
+
+bool Dictionary::loadFromFileToHashTable() {
     std::ifstream file(filepath);
     if (!file.is_open()) {
         return false; // Erro ao abrir o arquivo
@@ -12,7 +14,7 @@ bool Dictionary::loadFromFile(const std::string& filepath) {
     while (std::getline(file, line)) {
         std::string cleanedLine = cleanLine(line);
         if (!cleanedLine.empty()) {
-            data.insert(cleanedLine, true); // Insera a palavra no dicionário
+            hashTable.insert(cleanedLine, true); // Insera a palavra no dicionário
         }
     }
 
@@ -20,9 +22,31 @@ bool Dictionary::loadFromFile(const std::string& filepath) {
     return true; 
 }
 
-bool Dictionary::contains(const std::string& key) const {
+bool Dictionary::loadFromFileToVector() {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        return false; // Erro ao abrir o arquivo
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::string cleanedLine = cleanLine(line);
+        if (!cleanedLine.empty()) {
+            vector.push_back(cleanedLine); // Insera a palavra no dicionário
+        }
+    }
+
+    file.close();
+    return true; 
+}
+
+bool Dictionary::containsInHashTable(const std::string& key) const {
     bool value;
-    return data.find(key, value);
+    return hashTable.find(key, value);
+}
+
+bool Dictionary::containsInVector(const std::string& key) const {
+    return binarySearch(vector, key) != -1; // Usa busca binária para verificar se a palavra está no vetor
 }
 
 std::string Dictionary::cleanLine(const std::string& line) const {
