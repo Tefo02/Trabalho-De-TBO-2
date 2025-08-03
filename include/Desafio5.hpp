@@ -12,12 +12,8 @@ public:
         : dictionary(dictionaryFilePath), tokenizer(text) {}
 
     void run() {
-        if (!dictionary.loadFromFileToHashTable()) {
-            throw std::runtime_error("Failed to load dictionary from file to hash table.");
-        }
-
-        if (!dictionary.loadFromFileToVector()) {
-            throw std::runtime_error("Failed to load dictionary from file to vector.");
+        if (!dictionary.loadFromFile()) {
+            throw std::runtime_error("Failed to load dictionary from file.");
         }
 
         std::vector<std::string> tokens = tokenizer.tokenize();

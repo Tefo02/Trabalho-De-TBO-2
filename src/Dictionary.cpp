@@ -1,10 +1,13 @@
 #include "../include/Dictionary.hpp"
+#include "../include/MergeSort.hpp"
 #include <fstream>
 #include <sstream>
+#include <chrono>
+#include <iostream>
 
-Dictionary::Dictionary(const std::string& filepath) : filepath(filepath) {}
+Dictionary::Dictionary(const std::string& filepath) : filepath(filepath), hashTable(2000000){}
 
-bool Dictionary::loadFromFileToHashTable() {
+bool Dictionary::loadFromFile() {
     std::ifstream file(filepath);
     if (!file.is_open()) {
         return false; // Erro ao abrir o arquivo
@@ -14,27 +17,27 @@ bool Dictionary::loadFromFileToHashTable() {
     while (std::getline(file, line)) {
         std::string cleanedLine = cleanLine(line);
         if (!cleanedLine.empty()) {
-            hashTable.insert(cleanedLine, true); // Insera a palavra no dicionário
+            hashTable.insert(cleanedLine, true);
+            vector.push_back(cleanedLine);
         }
     }
 
-    file.close();
-    return true; 
-}
+    std::vector<std::string> specialWords = {
+        "a", "à", "á", "e", "é", "o", "ó", "u",
+        "ao", "aos", "aquela", "aquelas", "aquele", "aqueles",
+        "aqui", "aí", "ali", "isso"
+    };
 
-bool Dictionary::loadFromFileToVector() {
-    std::ifstream file(filepath);
-    if (!file.is_open()) {
-        return false; // Erro ao abrir o arquivo
+    for(const auto& word : specialWords) {
+        hashTable.insert(word, true);
+        vector.push_back(word);
     }
 
-    std::string line;
-    while (std::getline(file, line)) {
-        std::string cleanedLine = cleanLine(line);
-        if (!cleanedLine.empty()) {
-            vector.push_back(cleanedLine); // Insera a palavra no dicionário
-        }
-    }
+    auto start = std::chrono::high_resolution_clock::now();
+    mergeSort(vector, 0, vector.size() - 1); // Ordena o vetor após carregar os dados
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+    std::cout << "Tempo (Merge Sort): " << duration.count() << " ms\n";
 
     file.close();
     return true; 
@@ -55,6 +58,8 @@ std::string Dictionary::cleanLine(const std::string& line) const {
     size_t slash = cleaned.find('/');
     if (slash != std::string::npos)
         cleaned = cleaned.substr(0, slash);
+
+    std::transform(cleaned.begin(), cleaned.end(), cleaned.begin(), ::tolower); 
 
     return cleaned;
 }

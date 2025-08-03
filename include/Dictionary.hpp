@@ -3,13 +3,13 @@
 #include "HashTable.hpp"
 #include "BinarySearch.hpp"
 #include <vector>
+#include <algorithm>
 
 class Dictionary {
 public:
     Dictionary(const std::string& filepath);
 
-    bool loadFromFileToHashTable();
-    bool loadFromFileToVector();
+    bool loadFromFile();
     bool containsInHashTable(const std::string& key) const;
     bool containsInVector(const std::string& key) const;
 
