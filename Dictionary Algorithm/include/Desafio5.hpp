@@ -43,7 +43,7 @@ public:
         std::cout << "\n== Verificação com BKTree ==\n";
         auto startBKTree = std::chrono::high_resolution_clock::now();
         for (const auto& token : tokens) {
-            if (!dictionary.containsInBKTree(token)) {
+            if (!dictionary.containsInBKTree(token, 0)) {
                 std::cout << "[BKTree] Palavra não encontrada: " << token << std::endl;
             }
         }

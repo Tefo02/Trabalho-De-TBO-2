@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <memory>
 
-int levenshteinDistance(const std::string& s1, const std::string& s2) {
+inline int levenshteinDistance(const std::string& s1, const std::string& s2) {
     const size_t len1 = s1.size(), len2 = s2.size();
     std::vector<int> col(len2 + 1), prevCol(len2 + 1);
 
