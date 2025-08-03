@@ -34,23 +34,39 @@ struct Node {
 
 class BKTree {
 public:
-    
+    BKTree() : root(nullptr) {}
+
+    void add(const std::string& word) {
+        if (!root) {
+            root = std::make_unique<Node>(word);
+            return;
+        }
+        add_recursive(root.get(), word);
+    }
+
+    std::vector<std::string> search(const std::string& word, int max_distance) {
+        std::vector<std::string> results;
+        search_recursive(root.get(), word, max_distance, results);
+        return results;
+    }
 private:
     std::unique_ptr<Node> root;
 
+
     void add_recursive(Node* currentNode, const std::string& word) {
         int dist = levenshteinDistance(currentNode->word, word);
-        
-        // Se a distância for 0, a palavra já existe na árvore
         if (dist == 0) return;
 
-        // Verifica se já existe um filho a essa distância
-        if (currentNode->children.size() > dist) {
-            // Se sim, continua a busca a partir desse filho
+        // Garante que o vetor tenha tamanho suficiente
+        if (currentNode->children.size() <= dist) {
+            currentNode->children.resize(dist + 1);
+        }
+        // Verifica se já existe um nó para essa distância
+        if (currentNode->children[dist]) {
+            // Se já existe um nó, desce recursivamente
             add_recursive(currentNode->children[dist].get(), word);
         } else {
-            // Se não, cria um novo nó e o adiciona como filho
-            currentNode->children.resize(dist + 1);
+            // Se não, cria o novo nó aqui
             currentNode->children[dist] = std::make_unique<Node>(word);
         }
     }
