@@ -44,7 +44,7 @@ public:
         add_recursive(root.get(), word);
     }
 
-    std::vector<std::string> search(const std::string& word, int max_distance) {
+    std::vector<std::string> search(const std::string& word, int max_distance) const {
         std::vector<std::string> results;
         search_recursive(root.get(), word, max_distance, results);
         return results;
@@ -71,7 +71,7 @@ private:
         }
     }
 
-    void search_recursive(Node* currentNode, const std::string& word, int max_distance, std::vector<std::string>& results) {
+    void search_recursive(Node* currentNode, const std::string& word, int max_distance, std::vector<std::string>& results) const {
         if (!currentNode) return;
 
         int dist = levenshteinDistance(currentNode->word, word);

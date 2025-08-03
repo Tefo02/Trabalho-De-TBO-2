@@ -19,6 +19,7 @@ bool Dictionary::loadFromFile() {
         if (!cleanedLine.empty()) {
             hashTable.insert(cleanedLine, true);
             vector.push_back(cleanedLine);
+            bkTree.add(cleanedLine); 
         }
     }
 
@@ -62,4 +63,9 @@ std::string Dictionary::cleanLine(const std::string& line) const {
     std::transform(cleaned.begin(), cleaned.end(), cleaned.begin(), ::tolower); 
 
     return cleaned;
+}
+
+bool Dictionary::containsInBKTree(const std::string& key, size_t distance) const {
+    std::vector<std::string> results = bkTree.search(key, distance);
+    return !results.empty(); 
 }

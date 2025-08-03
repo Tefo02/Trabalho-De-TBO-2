@@ -39,6 +39,17 @@ public:
         auto endVector = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> durationVector = endVector - startVector;
         std::cout << "Tempo (Vector): " << durationVector.count() << " ms\n";
+
+        std::cout << "\n== Verificação com BKTree ==\n";
+        auto startBKTree = std::chrono::high_resolution_clock::now();
+        for (const auto& token : tokens) {
+            if (!dictionary.containsInBKTree(token)) {
+                std::cout << "[BKTree] Palavra não encontrada: " << token << std::endl;
+            }
+        }
+        auto endBKTree = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> durationBKTree = endBKTree - startBKTree;
+        std::cout << "Tempo (BKTree): " << durationBKTree.count() << " ms\n";
     }
 
 private:

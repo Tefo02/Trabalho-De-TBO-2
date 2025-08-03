@@ -11,3 +11,5 @@
 .vscode/
 
 exec
+
+settings.json
