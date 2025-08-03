@@ -13,6 +13,8 @@ bool Dictionary::loadFromFile() {
         return false; // Erro ao abrir o arquivo
     }
 
+    auto startDic = std::chrono::high_resolution_clock::now();
+
     std::string line;
     while (std::getline(file, line)) {
         std::string cleanedLine = cleanLine(line);
@@ -34,6 +36,10 @@ bool Dictionary::loadFromFile() {
         vector.push_back(word);
         bkTree.add(word);
     }
+
+    auto endDic = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> durationDic = endDic - startDic;
+    std::cout << "Tempo para carregar o dicionário: " << durationDic.count() << " ms\n";
 
     auto start = std::chrono::high_resolution_clock::now();
     mergeSort(vector, 0, vector.size() - 1); // Ordena o vetor após carregar os dados
