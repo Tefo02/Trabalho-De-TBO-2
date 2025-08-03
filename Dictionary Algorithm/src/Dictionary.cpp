@@ -32,6 +32,7 @@ bool Dictionary::loadFromFile() {
     for(const auto& word : specialWords) {
         hashTable.insert(word, true);
         vector.push_back(word);
+        bkTree.add(word);
     }
 
     auto start = std::chrono::high_resolution_clock::now();
