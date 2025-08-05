@@ -15,6 +15,7 @@ public:
     bool containsInHashTable(const std::string& key) const;
     bool containsInVector(const std::string& key) const;
     bool containsInBKTree(const std::string& key, size_t distance) const;
+    std::vector<std::string> getSuggestions(const std::string& key, size_t distance) const;
 
 private:
 

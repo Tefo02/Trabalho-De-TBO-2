@@ -73,6 +73,10 @@ std::string Dictionary::cleanLine(const std::string& line) const {
 }
 
 bool Dictionary::containsInBKTree(const std::string& key, size_t distance) const {
-    std::vector<std::string> results = bkTree.search(key, distance);
+    auto results = getSuggestions(key, distance);
     return !results.empty(); 
+}
+
+std::vector<std::string> Dictionary::getSuggestions(const std::string& key, size_t distance) const {
+    return bkTree.search(key, distance);
 }

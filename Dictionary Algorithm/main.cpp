@@ -6,7 +6,7 @@ int main() {
 
     
     std::string dictionaryFilePath = "data/portuguese-brazil.dic"; 
-    std::string text = "Este é um exemplo de texto utilizado para testar a funcionalidade do verificador ortográfico desenvolvido em C++. O sistema deve ser capaz de identificar palavras que não estão presentes no dicionário carregado previamente. A verificação deve ser rápida, eficiente e precisa, mesmo em textos relativamente longos. Neste texto, por exemplo, falaremos sobre a importância da acurácia em sistemas de correção automática, bem como sua utilidade em aplicações educacionais, profissionais e pessoais. [Ortográfia] incorreta pode prejudicar a credibilidade de um documento, afetando negativamente a percepção do leitor. Além disso, palavras como [funcionalidae] e [desenvolvimente] foram inseridas propositadamente com erros para avaliar se o sistema é capaz de encontrar elas. A experiência do usuário deve ser fluida, com feedback imediato sobre as palavras não reconhecidas. O sistema também deve lidar com pontuação e formatação de maneira adequada, garantindo que apenas palavras isoladas sejam verificadas. Por fim, esperamos que o sistema seja capaz de lidar com uma variedade de casos, incluindo palavras compostas e termos técnicos específicos.";
+    std::string text = "Este eh um texo de exempllo para testar o progeto. O computador eh rapido mas o algorimo esta lento. Qual a linguagem de programacão correta?";
     
     Desafio5 desafio(dictionaryFilePath, text);
     
@@ -21,5 +21,24 @@ int main() {
     std::chrono::duration<double, std::milli> totalDuration = end - start;
     std::cout << "Tempo total de execução: " << totalDuration.count() << " ms\n";
 
+    std::cout << '\n';
+    std::cout << "Sugestões: ";
+    const std::vector<std::string> incorrectWords = {
+        "exempllo", "progeto", "rapido", "algorimo", "programacão"
+    };
+
+    for (const auto& word : incorrectWords) {
+        std::string suggestion = desafio.getWordSuggestion(word);
+        if (!suggestion.empty()) {
+            for (const auto& sug : desafio.getSuggestions(word, 1)) {
+                std::cout << sug << " ";
+            }
+            std::cout << "(Sugestão para '" << word << "': " << suggestion << ")\n";
+        } else {
+            std::cout << "Nenhuma sugestão encontrada para: " << word << " ";
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n';
     return 0;
 }
