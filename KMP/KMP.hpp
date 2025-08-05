@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <vector>
 
@@ -61,7 +60,7 @@ void display(int **matrix, int symbols, std::string standard)
     std::cout << "Padrão: " << standard << std::endl;
 }
 
-int KMP(std::string standard, std::string text)
+std::vector<int> KMP(std::string standard, std::string text)
 {
     int symbols = countSymbols(standard);
     int **matrix = new int *[symbols];
@@ -89,6 +88,8 @@ int KMP(std::string standard, std::string text)
 
     int currentIndex = -1;
 
+    std::vector<int> result;
+
     for (int i = 0; i < text.size(); i++)
     {
         for (int k = 0; k < standard.size(); k++)
@@ -103,25 +104,32 @@ int KMP(std::string standard, std::string text)
             j = matrix[currentIndex][j];
 
         if (j == standard.size())
-            return i - j + 1;
+        {
+            result.push_back(i - j + 1);
+            j = matrix[symbolIndex[standard[j - 1]]][j - 2];
+        }
     }
-    return -1;
+
+    return result;
 }
 
 int main()
 {
+
     std::string standard;
     std::string text;
 
     std::getline(std::cin, text);
     std::cin >> standard;
 
-    int result = KMP(standard, text);
+    std::vector<int> result = KMP(standard, text);
 
-    if (result != -1)
-        std::cout << "Padrao encontrado no indice: " << result << std::endl;
-    else
-        std::cout << "Padrao nao encontrado";
-
+    for (int i = 0; i < result.size(); i++)
+    {
+        if (result[i] != -1)
+            std::cout << "Padrao encontrado no indice: " << result[i] << std::endl;
+        else
+            std::cout << "Padrao nao encontrado";
+    }
     return 0;
 }
