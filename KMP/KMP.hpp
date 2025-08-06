@@ -83,7 +83,7 @@ std::vector<int> KMP(std::string standard, std::string text)
 
     failureFuction(matrix, standard, symbols, symbolIndex);
 
-    display(matrix, symbols, standard);
+    // display(matrix, symbols, standard);
 
     int j = 0;
 
