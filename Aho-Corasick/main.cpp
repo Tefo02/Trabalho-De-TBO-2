@@ -38,16 +38,16 @@ std::vector<std::string> generateRandomPatterns(size_t count, int minLen, int ma
 
 int main() {
     // Texto de 1 milhão de caracteres
-    std::string text = generateRandomText(10000000);
+    std::string text = generateRandomText(1000000);
 
     // ---- Cenário 1: 1 padrão longo ----
-    std::cout << "\n===== Teste: 1 padrão longo (15 caracteres) =====\n";
-    auto patterns1 = generateRandomPatterns(1, 4, 4);
+    std::cout << "\n===== Teste: 1 padrão longo (4 caracteres) =====\n";
+    auto patterns1 = generateRandomPatterns(1, 4, 8);
     SearchBenchmark::run(text, patterns1);
 
     // ---- Cenário 2: 10 padrões longos ----
-    std::cout << "\n===== Teste: 10 padrões longos (15 caracteres) =====\n";
-    auto patterns2 = generateRandomPatterns(10, 4, 4);
+    std::cout << "\n===== Teste: 10 padrões longos (4 caracteres) =====\n";
+    auto patterns2 = generateRandomPatterns(10, 4, 8);
     SearchBenchmark::run(text, patterns2);
 
     // ---- Cenário 3: 100 padrões curtos ----
