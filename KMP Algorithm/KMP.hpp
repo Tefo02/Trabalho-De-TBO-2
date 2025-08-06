@@ -102,21 +102,45 @@ std::vector<int> KMP(const std::string &standard, const std::string &text)
 
     for (int i = 0; i < text.size(); i++)
     {
-        for (int k = 0; k < standard.size(); k++)
+        // Lógica para tratar o curinga do padrão
+        while (j < standard.size() && standard[j] == '*')
         {
-            if (text[i] == standard[k] && symbolIndex[standard[k]] != -1)
+            j++;
+        }
+
+        if (j < standard.size())
+        {
+            int textCharIndex = symbolIndex[text[i]];
+
+            if (textCharIndex != -1)
             {
-                currentIndex = symbolIndex[standard[k]];
-                break;
+                j = matrix[textCharIndex][j];
+            }
+            else
+            {
+                j = 0;
             }
         }
-        if (currentIndex != -1)
-            j = matrix[currentIndex][j];
 
         if (j == standard.size())
         {
             result.push_back(i - j + 1);
-            j = matrix[symbolIndex[standard[j - 1]]][j - 2];
+
+            // Regressão do j corrigida:
+            int prevCharIndex = -1;
+            if (standard[j - 1] != '*')
+            {
+                prevCharIndex = symbolIndex[standard[j - 1]];
+            }
+
+            if (prevCharIndex != -1)
+            {
+                j = matrix[prevCharIndex][j - 1];
+            }
+            else
+            {
+                j = 0;
+            }
         }
     }
 

@@ -67,9 +67,14 @@ void failureFuctionWithWildScore(int **matrix, const std::string &standard, int 
             {
                 matrix[c][i] = i + 1;
             }
-
-            // x = (i > 0) ? matrix[symbolIndex[standard[i - 1]]][x] : 0;
-            x = i;
+            if (i > 0 && standard[i - 1] != '*')
+            {
+                x = matrix[symbolIndex[standard[i - 1]]][x];
+            }
+            else
+            {
+                x = 0;
+            }
         }
     }
 }
@@ -91,13 +96,11 @@ std::vector<int> KMPWithWildScore(const std::string &standard, const std::string
 {
     int symbols = countSymbols(standard);
     int **matrix = new int *[symbols];
-
     for (int i = 0; i < symbols; i++)
     {
         matrix[i] = new int[standard.size()]();
     }
 
-    // crio um vetor com tamanho de 256 para armazenar todos os possíveis caracteres ASCII
     std::vector<int> symbolIndex(256, -1);
     int symbolCount = 0;
     for (char c : standard)
@@ -111,35 +114,52 @@ std::vector<int> KMPWithWildScore(const std::string &standard, const std::string
     symbols = symbolCount;
 
     failureFuctionWithWildScore(matrix, standard, symbols, symbolIndex);
-
     display(matrix, symbols, standard);
 
     int j = 0;
-
-    int currentIndex = -1;
-
     std::vector<int> result;
 
     for (int i = 0; i < text.size(); i++)
     {
-        for (int k = 0; k < standard.size(); k++)
+        if (j < standard.size() && standard[j] == '*')
         {
-            if (text[i] == standard[k] && symbolIndex[standard[k]] != -1)
+            j++;
+        }
+        else
+        {
+            int textCharIndex = -1;
+            if (text[i] < 256 && symbolIndex[text[i]] != -1)
             {
-                currentIndex = symbolIndex[standard[k]];
-                break;
+                textCharIndex = symbolIndex[text[i]];
+            }
+            if (textCharIndex != -1)
+            {
+                j = matrix[textCharIndex][j];
+            }
+            else
+            {
+                j = 0;
             }
         }
-        if (currentIndex != -1)
-            j = matrix[currentIndex][j];
-        if (text[i] == '*')
-            j++;
+
         if (j == standard.size())
         {
             result.push_back(i - j + 1);
-            j = matrix[symbolIndex[standard[j - 1]]][j - 2];
+
+            int prevCharIndex = -1;
+            if (standard[j - 1] != '*')
+            {
+                prevCharIndex = symbolIndex[standard[j - 1]];
+            }
+            if (prevCharIndex != -1)
+            {
+                j = matrix[prevCharIndex][j - 1];
+            }
+            else
+            {
+                j = 0;
+            }
         }
     }
-
     return result;
 }
