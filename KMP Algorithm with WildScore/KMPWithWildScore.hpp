@@ -121,31 +121,28 @@ std::vector<int> KMPWithWildScore(const std::string &standard, const std::string
 
     for (int i = 0; i < text.size(); i++)
     {
+        int textCharIndex = -1;
+        if (text[i] >= 0 && text[i] < 256 && symbolIndex[text[i]] != -1)
+        {
+            textCharIndex = symbolIndex[text[i]];
+        }
+
         if (j < standard.size() && standard[j] == '*')
         {
             j++;
         }
+        else if (textCharIndex != -1)
+        {
+            j = matrix[textCharIndex][j];
+        }
         else
         {
-            int textCharIndex = -1;
-            if (text[i] < 256 && symbolIndex[text[i]] != -1)
-            {
-                textCharIndex = symbolIndex[text[i]];
-            }
-            if (textCharIndex != -1)
-            {
-                j = matrix[textCharIndex][j];
-            }
-            else
-            {
-                j = 0;
-            }
+            j = 0;
         }
 
         if (j == standard.size())
         {
             result.push_back(i - j + 1);
-
             int prevCharIndex = -1;
             if (standard[j - 1] != '*')
             {
