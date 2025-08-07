@@ -16,6 +16,11 @@ public:
             throw std::runtime_error("Failed to load dictionary from file.");
         }
 
+        std::string inputText;
+        std::cout << "Digite o texto a ser verificado: ";
+        std::getline(std::cin, inputText);
+        tokenizer.setText(inputText);
+
         std::vector<std::string> tokens = tokenizer.tokenize();
 
         std::vector<std::string> wordsNotFound;
@@ -32,35 +37,25 @@ public:
         std::chrono::duration<double, std::milli> durationHash = endHash - startHash;
         std::cout << "Tempo (HashTable): " << durationHash.count() << " ms\n";
 
-        size_t i = 0;
         std::cout << "\n== Verificação com Vector ==\n";
         auto startVector = std::chrono::high_resolution_clock::now();
         for (const auto& token : tokens) {
             if (!dictionary.containsInVector(token)) {
                 std::cout << "[Vector] Palavra não encontrada: " << token << std::endl;
-                if(wordsNotFound[i] != token) {
-                    std::cout << "[Atenção!!!] Palavra não encontrada no metodo anterior: " << token << std::endl;
-                }
             }
-            ++i;
 
         }
 
-        i = 0;
         auto endVector = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> durationVector = endVector - startVector;
-        std::cout << "Tempo (Vector): " << durationVector.count() << " ms\n";
+        std::cout << "Tempo (Vector): " << durationVector.count() << " ms\n";     
 
         std::cout << "\n== Verificação com BKTree ==\n";
         auto startBKTree = std::chrono::high_resolution_clock::now();
         for (const auto& token : tokens) {
             if (!dictionary.containsInBKTree(token, 0)) {
                 std::cout << "[BKTree] Palavra não encontrada: " << token << std::endl;
-                if(wordsNotFound[i] != token) {
-                    std::cout << "[Atenção!!!] Palavra não encontrada no metodo anterior: " << token << std::endl;
-                }
             }
-            ++i;
         }
         auto endBKTree = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> durationBKTree = endBKTree - startBKTree;
