@@ -2,7 +2,6 @@
 
 #include "../Dictionary Algorithm/include/HashTable.hpp"
 #include "MinHeap.hpp"
-#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
