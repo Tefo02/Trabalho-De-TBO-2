@@ -39,7 +39,7 @@ bool Dictionary::loadFromFile() {
 
     auto endDic = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> durationDic = endDic - startDic;
-    std::cout << "Tempo para carregar o dicionário: " << durationDic.count() << " ms\n";
+    // std::cout << "Tempo para carregar o dicionário: " << durationDic.count() << " ms\n";
 
     auto start = std::chrono::high_resolution_clock::now();
     mergeSort(vector, 0, vector.size() - 1); // Ordena o vetor após carregar os dados
